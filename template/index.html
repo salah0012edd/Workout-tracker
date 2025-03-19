@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Workout & Meals Planner</title>
+</head>
+<body>
+    <h1>Workout Planner</h1>
+    
+    <!-- Add Workout Form -->
+    <form action="{{ url_for('add_workout') }}" method="POST" class="input-container">
+        <input type="text" placeholder="Exercice name" name="exercice" required>
+        <input type="date" name="date" required>
+        <input type="number" placeholder="Sets" name="sets" min="0">
+        <input type="number" placeholder="Reps" name="reps" min="0">
+        <input type="number" placeholder="Duration (min)" name="duration" min="0">
+        <button type="submit" class="btn">Add Workout</button>
+    </form>
+
+    <!-- Add Meal Form -->
+    <form action="{{ url_for('add_meal') }}" method="POST" class="input-container">
+        <input type="text" placeholder="Meal name" name="meal_name" required>
+        <input type="number" placeholder="Calories" name="calories" min="0">
+        <input type="number" placeholder="Protein (g)" name="protein" min="0">
+        <input type="date" name="date" required>
+        <button type="submit" class="btn">Add Meal</button>
+    </form>
+
+    <!-- Workouts Table (Only show if there are workouts) -->
+    <div class="table-container">
+        <div class="table-box">
+            {% if workouts %}
+            <div class="table-header">Exercises</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>    </th>
+                        <th>Exercice-name</th>
+                        <th>Date</th>
+                        <th>Sets</th>
+                        <th>Reps</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for workout in workouts %}
+                    <tr>
+                        <td class="delete-btn-cell">
+                            <a href="{{url_for('delete_wor', id=workout['id'])}}" class="delete-btn">X</a></td>
+                        <td>{{ workout['exercice'] }}</td>
+                        <td>{{ workout['date'] }}</td>
+                        <td>{{ workout['sets'] }}</td>
+                        <td>{{ workout['reps'] }}</td>
+                        <td>{{ workout['duration'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+
+
+    <!-- Meals Table (Only show if there are meals) -->
+    <div class="table-box">
+        {% if meal %}
+        <div class="table-header">Meals</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>    </th>
+                    <th>Meal-name</th>
+                    <th>Calories</th>
+                    <th>Protein</th>
+                    <th>Date</th> 
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in meal %}
+                <tr>
+                    <td class="delete-btn-cell">
+                        <a href="{{url_for('delete_me', id=m['id'])}}" class="delete-btn">X</a></td>
+                    <td>{{ m['meal_name'] }}</td>
+                    <td>{{ m['calories'] }}</td>
+                    <td>{{ m['protein'] }}</td>
+                    <td>{{ m['date'] }}</td> 
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %} 
+    </div>
+
+    
+    </div>
+    
+</body>
+</html>
